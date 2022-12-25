@@ -1,0 +1,23 @@
+-- Задача #1: Произвести выборку данных из столбцов prod_id, prod_name, prod_price таблицы products, в случае если prod_price составляет 2.50.
+select prod_id, prod_name, prod_price from products where prod_price = money(2.50);
+
+-- Задача #2: Произвести выборку данных из столбцов prod_id, prod_name, prod_price таблицы products, в случае если имя продукта Fuses.
+select prod_id, prod_name, prod_price from products where prod name = 'Fuses';
+
+/*Задача #3: Предусловие: в таблицу products добавить запись, у которой в столбце с наименованием продукта содержится значение fuses.
+Произвести выборку данных из столбцов prod_id, prod_name, prod_price таблицы products, в случае если имя продукта fuses. 
+В результат должны попасть записи, у которых значение столбца содержит fuses, независимо от регистра.* */
+select prod_id, pord_name, prod_price from products
+
+-- Задача #4: Произвести выборку данных из столбцов prod_id, prod_name, prod_price таблицы products, в случае если prod_price меньше 10.
+select prod_id, prod_name, prod_price from products where prod_price < 10;
+
+-- Задача #5: Произвести выборку данных из столбцов prod_id, prod_name, prod_price таблицы products, в случае если prod_price меньше или равно 10.
+select prod_id, prod_name, prod_price from products where prod_price <= 10;
+
+/* Задача #6:Произвести выборку данных из столбцов vend_id, prod_name, prod_price таблицы products, в случае если эти товары не произведены поставщиком с идентификатором 1003 
+(если идентификаторы отличаются от базовых, то взять из своей таблицы). Решить четырьмя способами. */
+
+-- Задача #7: Произвести выборку данных из столбцов prod_id, prod_name, prod_price таблицы products, в случае если цена больше или равна 5 и меньше или равна 10 (решить разными способами).
+select prod_id, prod_name, prod_price from products where prod_price >= 5 or prod_price <= 10;
+select prod_id, prod_name, prod_price from products where between 5 and 10;
