@@ -1,0 +1,133 @@
+/* Задача 1: С помощью неявного соединения таблиц осуществить выборку информации 
+о поставщике (vend_name) и производимых им продуктах (prod_name, prod_price) */
+select v.vend_name, p.prod_name, p.prod_price 
+	from vendors v, products p; 
+
+/* Задача 2: С помощью неявного соединения таблиц осуществить выборку информации 
+о поставщике (vend_name) и производимых им продуктах (prod_name, prod_price) */
+select v.vend_id, v.vend_name, p.prod_name, p.prod_price 
+	from products p
+	  inner join vendors v on p.vend_id = v.vend_id;
+  
+ /* Задача 3: С помощью неявного соединения таблиц осуществить выборку информации 
+ о продуктах (prod_name, prod_price) и их заказанном количестве (quantity), поставщиках (vend_name) */ 
+select p.prod_name, p.prod_price, o.quantity, v.vend_name 
+	from vendors v, products p, orderitems o;
+
+/* Задача 4: С помощью неявного соединения таблиц осуществить выборку информации 
+о поставщиках (vend_name), продуктах (prod_name, prod_price) и их количестве (quantity) в заказе 20005 */
+select p.prod_name, p.prod_price, oi.quantity, v.vend_name, oi.order_num  
+	from vendors v, products p, orderitems oi
+where oi.prod_id = p.prod_id and p.vend_id = v.vend_id and oi.order_num = 20005;
+	
+/* Задача 5: С помощью внутреннего соединения таблиц осуществить выборку информации 
+о поставщиках (vend_name), продуктах (prod_name, prod_price) и их количестве (quantity) в заказе 20005 */
+select v.vend_name, p.vend_id, p.prod_name, p.prod_price, oi.prod_id, oi.order_num, oi.quantity
+	from orderitems oi
+	  inner join products p on oi.prod_id = p.prod_id and oi.order_num = 20005
+	  inner join vendors v on p.vend_id = v.vend_id;
+	
+/* Задача 6: Задача 6.
+С помощью внутреннего соединения таблиц осуществить выборку информации 
+о клиентах (cust_id, cust_name) и их заказах (order_num) оформленных в период с января по март 2016г. включительно. */
+select c.cust_id, c.cust_name, o.order_num, o.order_date
+	from orders o
+	  inner join customers c on o.cust_id = c.cust_id and o.order_date between '2016-01-01' and '2016-03-31';
+	
+/* Задача 7: С помощью неявного соединения таблиц осуществить выборку информации 
+о клиентах (cust_id, cust_name, cust_contact) и их заказах (order_num, order_date), если в заказе присутствует товар SLING */
+select c.cust_id, c.cust_name, cust_contact, o.order_num, o.order_date
+	from customers c, orders o, orderitems oi 
+where o.cust_id = c.cust_id and o.order_num = oi.order_num and oi.prod_id = 'SLING';
+	
+/* Задача 8: С помощью внутреннего соединения таблиц осуществить выборку информации 
+о клиентах (cust_id, cust_name, cust_contact) и их заказах (order_num, order_date), если в заказе присутствует товар SLING */
+select c.cust_id, c.cust_name, c.cust_contact, o.cust_id, o.order_num, oi.prod_id, o.order_date
+	from orders o
+    inner join orderitems oi on o.order_num = oi.order_num and oi.prod_id = 'SLING'
+    inner join customers c on c.cust_id = o.cust_id;
+	
+/* Задача 9: С помощью внутреннего соединения таблиц осуществить выборку информации 
+о поставщиках (vend_name, vend_city) и товаре (prod_name, prod_price), если в заказе присутствует товар DTNTR. Использовать псевдонимы таблиц */
+select v.vend_name, v.vend_city, p.prod_name, p.prod_price, p.prod_id
+	from products p
+	  inner join vendors v on p.vend_id = v.vend_id and p.prod_id = 'DTNTR';
+	
+/* Задача 10: С помощью внутреннего соединения таблиц осуществить 
+выборку информации о всех товарах (prod_name, prod_price, prod_id) производимых поставщиком, 
+который также поставляет товар DTNTR. Использовать псевдонимы таблиц */
+select p.prod_name, p.prod_price, p.prod_id, v.vend_id
+	from vendors v
+	  inner join products p on v.vend_id = p.vend_id and p.vend_id = 1003;
+	
+/* Задача 11: С помощью неявного соединения таблиц осуществить выборку информации о клиентах 
+и их заказах (order_num, order_date), в состав которых входит продукт FB, и 
+о продукте (prod_id, quantity, item_price). Использовать псевдонимы таблиц */
+select o.cust_id, o.order_num, o.order_date, oi.prod_id, oi.quantity, oi.item_price
+	from orderitems oi, orders o, customers c 
+ where oi.order_num = o.order_num and o.cust_id = c.cust_id;
+
+/* Задача 12: С помощью внутреннего соединения таблиц осуществить выборку информации о клиентах (cust_id, cust_name, cust_contact) 
+и их заказах (order_num, order_date) и общую стоимость заказа, если в заказе присутствует товар SLING. */
+select o.cust_id, c.cust_name, c.cust_contact, o.order_num, o.order_date, oi.order_num, oi.prod_id, oi.item_price 
+	from orders o
+    inner join customers c on o.cust_id = c.cust_id
+    inner join orderitems oi on o.order_num = oi.order_num and oi.prod_id = 'SLING';
+    
+/* Задача 13: Извлечь информацию о поставщиках, продуктах, производимых ими, в том числе включить тех, кто не осуществлял 
+ производство каких-либо товаров. */
+select p.prod_name, p.prod_price, p.prod_id, v.vend_id
+	from vendors v
+	  left outer join products p on v.vend_id = p.vend_id
+	  
+/* Задача 14: Извлечь информацию о продуктах и созданных для них комментариях, включая те продукты, для которых не было создано комментария. */
+select p.note_id, p.prod_id, p.note_date, p.note_text 
+	from productnotes p 
+		left outer join products p2 ON p.prod_id = p.prod_id 
+
+/* Задача 15: Извлечь информацию о продуктах и заказах, включая те продукты, которые не участвовали ни в одном заказе */
+select o.prod_id, o.order_item, o.item_price, p.prod_id
+	from orderitems o 
+		full outer join products p on p.prod_id  = o.prod_id 
+
+/* Задача 16: Извлечь список всех продуктов и количество заказов, в которые они включены */
+select p.prod_id, p.prod_name, o.prod_id
+	from products p 
+		full outer join orderitems o ON p.prod_id = o.prod_id 
+
+/* Задача 17: Извлечь список всех продуктов и общую стоимость этих товаров в заказах, в которые они включены */
+select  p.prod_id, p.prod_name, oi.prod_id, oi.item_price 
+	from products p
+	left outer join orderitems oi on p.prod_id  = oi.prod_id 
+
+/* Задача 18: Извлечь информацию о поставщиках, общем количестве произведенных ими товаров, общей сумме произведенных товаров, минимальной и 
+максимальной стоимости произведенных товаров, в том числе включить тех, кто не осуществлял производство каких-либо товаров */
+select v.vend_id, v.vend_name, oi.item_price, oi.quantity, (oi.item_price * oi.quantity) as "Stoimost", 
+	(select min(oi.item_price) from orderitems io), 
+	(select max(oi.item_price) from orderitems io) 
+from vendors v 
+	left outer join products p  on p.vend_id = v.vend_id
+	left outer join orderitems oi on oi.prod_id = p.prod_id;
+
+/* Задача 19: Получить список всех товаров стоимостью не больше 5, а также включить в получаемые результаты все товары, произведенные поставщиками 
+с идентификаторами 1001 и 1002, независимо от их цены. Использовать оператор UNION */
+select prod_name, vend_id, prod_price from products p 
+	where (prod_price::numeric) < 10000
+union select prod_name, vend_id, prod_price from "Products" 
+	where vend_id = 1001 or vend_id = 1002 
+
+/* Задача 20: Получить список всех товаров стоимостью не больше 5, а также включить в получаемые результаты все товары, произведенные поставщиками с 
+идентификаторами 1001 и 1002, независимо от их цены. Использовать оператор UNION ALL */
+select prod_name, vend_id, prod_price from products p 
+	where (prod_price::numeric) < 10000
+union all select prod_name, vend_id, prod_price from "Products" 
+	where vend_id = 1001 or vend_id = 1002 
+
+/* Задача 21: Получить список всех товаров стоимостью не больше 5, а также включить в получаемые результаты все товары, произведенные поставщиками с идентификаторами 1001 и 1002, независимо от их цены. 
+Использовать оператор UNION результат вывести в отсортированном виде по идентификатору поставщика и цене продукта*/
+select prod_name, vend_id, prod_price from products p 
+	where (prod_price::numeric) < 10000
+union all select prod_name, vend_id, prod_price from "Products" 
+	where vend_id = 1001 or vend_id = 1002 
+		group by prod_name, vend_id, prod_price 
+		order by vend_id, prod_price;
